@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopSmart - AI-Powered Shopping Experience</title>
+    <meta name="description" content="Discover amazing products with AI-powered recommendations and smart shopping features" />
+    <meta name="author" content="ShopSmart Team" />
+    
+    <!-- Favicon and icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="ShopSmart - AI Shopping Platform" />
+    <meta property="og:description" content="Revolutionary shopping experience with AI recommendations" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Font imports for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <!-- Loading screen with animated logo -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="loading-text">ShopSmart</div>
+      </div>
+    </div>
+
+    <!-- Main application container -->
+    <div id="app" class="app-container">
+      <!-- Header section with navigation and search -->
+      <header class="header">
+        <nav class="navbar">
+          <!-- Logo and brand -->
+          <div class="nav-brand">
+            <i class="fas fa-shopping-bag brand-icon"></i>
+            <span class="brand-text">ShopSmart</span>
+          </div>
+
+          <!-- Advanced search bar with AI features -->
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="Search products, brands, or describe what you need..."
+                autocomplete="off"
+              >
+              <button id="voice-search" class="voice-search-btn" title="Voice Search">
+                <i class="fas fa-microphone"></i>
+              </button>
+              <button id="ai-search" class="ai-search-btn" title="AI Smart Search">
+                <i class="fas fa-brain"></i>
+              </button>
+            </div>
+            <!-- Search suggestions dropdown -->
+            <div id="search-suggestions" class="search-suggestions hidden"></div>
+          </div>
+
+          <!-- Navigation menu -->
+          <div class="nav-menu">
+            <button class="nav-item" id="wishlist-btn">
+              <i class="fas fa-heart"></i>
+              <span class="nav-text">Wishlist</span>
+              <span id="wishlist-count" class="count-badge">0</span>
+            </button>
+            <button class="nav-item" id="compare-btn">
+              <i class="fas fa-balance-scale"></i>
+              <span class="nav-text">Compare</span>
+              <span id="compare-count" class="count-badge">0</span>
+            </button>
+            <button class="nav-item" id="cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="nav-text">Cart</span>
+              <span id="cart-count" class="count-badge">0</span>
+            </button>
+            <button class="nav-item" id="profile-btn">
+              <i class="fas fa-user"></i>
+              <span class="nav-text">Profile</span>
+            </button>
+          </div>
+
+          <!-- Mobile menu toggle -->
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </nav>
+      </header>
+
+      <!-- Main content area -->
+      <main class="main-content">
+        <!-- Hero section with dynamic content -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <h1 class="hero-title">Discover Amazing Products</h1>
+            <p class="hero-subtitle">AI-powered recommendations just for you</p>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number" id="products-count">0</span>
+                <span class="stat-label">Products</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="categories-count">0</span>
+                <span class="stat-label">Categories</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="users-count">10K+</span>
+                <span class="stat-label">Happy Users</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="floating-products"></div>
+          </div>
+        </section>
+
+        <!-- AI Recommendations section -->
+        <section class="ai-recommendations">
+          <h2 class="section-title">
+            <i class="fas fa-brain"></i>
+            AI Recommendations for You
+          </h2>
+          <div id="ai-products" class="products-grid"></div>
+        </section>
+
+        <!-- Filter and sort controls -->
+        <section class="filter-section">
+          <div class="filter-header">
+            <h2 class="section-title">Browse Products</h2>
+            <button id="filter-toggle" class="filter-toggle">
+              <i class="fas fa-filter"></i>
+              Filters
+            </button>
+          </div>
+          
+          <div class="filter-controls" id="filter-controls">
+            <!-- Category filter -->
+            <div class="filter-group">
+              <label class="filter-label">Category</label>
+              <select id="category-filter" class="filter-select">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+
+            <!-- Price range filter -->
+            <div class="filter-group">
+              <label class="filter-label">Price Range</label>
+              <div class="price-range-container">
+                <input type="range" id="price-range" min="0" max="1000" value="1000" class="price-slider">
+                <div class="price-display">
+                  <span>$0</span>
+                  <span id="max-price-display">$1000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rating filter -->
+            <div class="filter-group">
+              <label class="filter-label">Minimum Rating</label>
+              <div class="rating-filter">
+                <div class="stars-filter" id="rating-filter">
+                  <i class="fas fa-star" data-rating="1"></i>
+                  <i class="fas fa-star" data-rating="2"></i>
+                  <i class="fas fa-star" data-rating="3"></i>
+                  <i class="fas fa-star" data-rating="4"></i>
+                  <i class="fas fa-star" data-rating="5"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sort options -->
+            <div class="filter-group">
+              <label class="filter-label">Sort By</label>
+              <select id="sort-filter" class="filter-select">
+                <option value="relevance">Relevance</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Rating</option>
+                <option value="newest">Newest</option>
+                <option value="popularity">Popularity</option>
+              </select>
+            </div>
+
+            <!-- Clear filters button -->
+            <button id="clear-filters" class="clear-filters-btn">
+              <i class="fas fa-times"></i>
+              Clear All
+            </button>
+          </div>
+        </section>
+
+        <!-- Products display section -->
+        <section class="products-section">
+          <div class="products-header">
+            <div class="view-options">
+              <button id="grid-view" class="view-btn active">
+                <i class="fas fa-th"></i>
+              </button>
+              <button id="list-view" class="view-btn">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+            <div class="results-info">
+              <span id="results-count">0 products found</span>
+            </div>
+          </div>
+          
+          <!-- Products grid/list -->
+          <div id="products-container" class="products-grid">
+            <!-- Products will be dynamically inserted here -->
+          </div>
+
+          <!-- Load more button -->
+          <div class="load-more-container">
+            <button id="load-more" class="load-more-btn hidden">
+              <i class="fas fa-plus"></i>
+              Load More Products
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <!-- AI Chat Bot Widget -->
+      <div id="ai-chatbot-widget" class="chatbot-widget">
+        <button id="chatbot-toggle" class="chatbot-toggle">
+          <i class="fas fa-comments"></i>
+        </button>
+        <div id="chatbot-window" class="chatbot-window hidden">
+          <div class="chatbot-header">
+            <span>AI Assistant</span>
+            <button id="chatbot-close" class="chatbot-close"><i class="fas fa-times"></i></button>
+          </div>
+          <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chatbot-message bot">Hi! I'm your ShopSmart AI assistant. How can I help you today?</div>
+          </div>
+          <form id="chatbot-form" class="chatbot-form">
+            <input id="chatbot-input" type="text" placeholder="Type your message..." autocomplete="off" />
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Shopping Cart Sidebar -->
+      <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+          <h3 class="cart-title">
+            <i class="fas fa-shopping-cart"></i>
+            Shopping Cart
+          </h3>
+          <button id="close-cart" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div id="cart-items" class="cart-items">
+          <!-- Cart items will be inserted here -->
+        </div>
+        
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax:</span>
+            <span id="cart-tax">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping:</span>
+            <span id="cart-shipping">Free</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total:</span>
+            <span id="cart-total">$0.00</span>
+          </div>
+          
+          <div class="cart-actions">
+            <button id="clear-cart" class="clear-cart-btn">
+              <i class="fas fa-trash"></i>
+              Clear Cart
+            </button>
+            <button id="checkout-btn" class="checkout-btn">
+              <i class="fas fa-credit-card"></i>
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Quick View Modal -->
+      <div id="quick-view-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Quick View</h3>
+            <button class="close-modal" id="close-quick-view">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div id="quick-view-content" class="modal-body">
+            <!-- Quick view content will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Wishlist Modal -->
+      <div id="wishlist-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">
+              <i class="fas fa-heart"></i>
+              My Wishlist
+            </h3>
+            <button class="close-modal" id="close-wishlist">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div id="wishlist-content" class="modal-body">
+            <!-- Wishlist items will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Modal -->
+      <div id="compare-modal" class="modal">
+        <div class="modal-content wide">
+          <div class="modal-header">
+            <h3 class="modal-title">
+              <i class="fas fa-balance-scale"></i>
+              Product Comparison
+            </h3>
+            <button class="close-modal" id="close-compare">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div id="compare-content" class="modal-body">
+            <!-- Comparison content will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Modal -->
+      <div id="profile-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">
+              <i class="fas fa-user"></i>
+              My Profile
+            </h3>
+            <button class="close-modal" id="close-profile">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div id="profile-content" class="modal-body">
+            <form id="profile-form" class="profile-form">
+              <div class="form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="profile-name" name="name" required />
+              </div>
+              <div class="form-group">
+                <label for="profile-username">Username</label>
+                <input type="text" id="profile-username" name="username" required />
+              </div>
+              <div class="form-group">
+                <label for="profile-password">Password</label>
+                <input type="password" id="profile-password" name="password" required />
+              </div>
+              <button type="submit" class="btn-primary" id="save-profile">Save Changes</button>
+              <button type="button" class="btn-secondary" id="logout-btn">Log Out</button>
+            </form>
+            <hr />
+            <div class="order-history-section">
+              <h4>Order History</h4>
+              <div id="order-history-list"></div>
+              <button type="button" class="btn-primary" id="add-order-btn">Add Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification system -->
+      <div id="notifications" class="notifications-container"></div>
+
+      <!-- Back to top button -->
+      <button id="back-to-top" class="back-to-top hidden">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="index.js"></script>
+  </body>
+</html>
