@@ -1,5 +1,7 @@
 # Steps to run
 
+[View the project report (PDF)](https://github.com/sanjai-b-2006/gen_ai_shopsmart/blob/main/report.pdf)
+
 How to work with:
 
   - Keep all files in same folder
@@ -14,4 +16,4 @@ How to work with:
 
 Otherwise Created JSON will not be imported plz follow these steps
 
-
+[View the project report (PDF)](https://github.com/sanjai-b-2006/gen_ai_shopsmart/blob/main/report.pdf)
