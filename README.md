@@ -1,4 +1,4 @@
-# gen_ai_shopsmart
+# Steps to run
 
 How to work with:
 
